@@ -1,0 +1,220 @@
+GAMS Rev 143  Intel/MS Windows                          03/27/06 10:00:25 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  * mps2gms 1.1   Aug  1, 2005 WIN.FR.NA 22.0 003.000.000.VIS P3PC
+   2  *
+   3  * MPS Input File = BACKUP.mps
+   4  *
+   5  * line        1 NAME          LPFROMSPREADSHEET
+   6  * line        2 ROWS
+   7  * line        3  N  Obj
+   8  * line     1741 COLUMNS
+   9  * line    24658 RHS
+  10  * line    24659     RHS       ODFeb      50000.0
+  11  * line    24674 ENDATA
+  12  *
+  13  * Number of MPS rows    =      1738 (N:1 L:1725 G:0 E:12)
+  14  * Number of MPS columns =      3797 (C:3797 I:0)
+  15  * Number of MPS coefs   =     22916 (N:2 L:22891 G:0 E:23)
+  16  * Number of MPS Qs      =         0 (empty rows:0)
+  17  * Number of MPS cones   =         0
+  18  * Number of MPS errors  =         0
+  19   
+  20   
+  21  sets i      all rows in MPS order
+  22       ig(i)  greater-than-or equal rows
+  23       il(i)  less-than-or equal rows
+  24       ie(i)  equality rows
+  25       ir(i)  ranged rows
+  26       ik(i)  cones;
+  27   
+  28  equations eobj   objective function
+  29            eg(i)  greater-than-or equal equs
+  30            el(i)  less-than-or equal equs
+  31            ee(i)  equality equs;
+  32   
+  33  sets j        all columns in MPS order
+  34       jc (j)   continuous columns
+  35       jb (j)   binary columns
+  36       ji (j)   integer columns
+  37       jsc(j)   semi-continuous columns
+  38       jsi(j)   semi-integer columns
+  39       s        sos sets
+  40       js1(s,j) sos 1 columns
+  41       js2(s,j) sos 2 columns;
+  42   
+  43   
+  44           variables obj        objective variable
+  45  positive variables xc (j)     continuous variables
+  46                     r  (i)     ranged row variables
+  47  binary   variables xb (j)     binary variables
+  48  integer  variables xi (j)     integer variables
+  49  semicont variables xsc(j)     semi-continuous variables
+  50  semiint  variables xsi(j)     semi-integer variables
+  51  sos1     variables xs1(s,j)   sos 1 variables
+  52  sos2     variables xs2(s,j)   sos 2 variables;
+  53   
+  54   
+  55  parameters  c(j)        objective coefs
+  56              cobj        objective constant
+  57              b(i)        right hand sides
+  58              ac (i,jc)   matrix coefs: continuous variables
+  59              ab (i,jb)   matrix coefs: binary variables
+  60              ai (i,ji)   matrix coefs: integer variables
+  61              asc(i,jsc)  matrix coefs: semi-continuous variables
+  62              asi(i,jsi)  matrix coefs: semi-integer variables
+  63              as1(i,s,j)  matrix coefs: sos 1 variables
+  64              as2(i,s,j)  matrix coefs: sos 2 variables;
+  65   
+  66   
+  67  eobj.. obj =e= sum(jc,       c(jc  )*xc (jc ))
+  68                + cobj;
+  69   
+  70  eg(ig)..       sum(jc,  ac (ig,jc )*xc (jc ))
+  71                =g= b(ig);
+  72   
+  73  el(il)..       sum(jc,  ac (il,jc )*xc (jc ))
+  74                =l= b(il);
+  75   
+  76  ee(ie)..       sum(jc,  ac (ie,jc )*xc (jc ))
+  77                =e= b(ie);
+  78   
+  79  model m / all /;
+  80   
+  81   
+  82  set mps2gms; parameter mps2gmsstats(mps2gms);
+  83   
+--- LOAD  i = 4:i
+--- LOAD  j = 11:j
+--- LOAD  mps2gms = 1:mps2gms
+--- LOAD  s = 12:s
+--- LOAD  mps2gmsstats = 41:mps2gmsstats
+--- LOAD  ig = 8:ig
+--- LOAD  il = 7:il
+--- LOAD  ie = 6:ie
+--- LOAD  ir = 9:ir
+--- LOAD  ik = 10:ik
+--- LOAD  jc = 13:jc
+--- LOAD  jb = 14:jb
+--- LOAD  ji = 15:ji
+--- LOAD  jsc = 16:jsc
+--- LOAD  jsi = 17:jsi
+--- LOAD  js1 = 18:js1
+--- LOAD  js2 = 19:js2
+--- LOAD  cobj = 21:cobj
+--- LOAD  c = 22:c
+--- LOAD  b = 32:b
+--- LOAD  ac = 23:ac
+--- LOAD  ab = 24:ab
+--- LOAD  ai = 25:ai
+--- LOAD  asc = 26:asc
+--- LOAD  asi = 27:asi
+--- LOAD  as1 = 28:as1
+--- LOAD  as2 = 29:as2
+--- LOAD  xc = 33:xc
+--- LOAD  xb = 34:xb
+--- LOAD  xi = 35:xi
+--- LOAD  xsc = 36:xsc
+--- LOAD  xsi = 37:xsi
+--- LOAD  xs1 = 38:xs1
+--- LOAD  xs2 = 39:xs2
+--- LOAD  r = 40:r
+  91   
+  93   
+  94  option limcol=0,limrow=0,solprint=off;
+  95   
+  96  option rmip = conopt;
+  97   
+  98  option lp = conopt;
+  99   
+ 100  solve m using lp maximising obj;
+GAMS Rev 143  Intel/MS Windows                          03/27/06 10:00:25 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  C:\Documents and Settings\Neal\My Docu
+                                          ments\gamsdir\HonsThesisDairyLP.gms
+     2       84 GDXIN          1      84  C:\Documents and Settings\Neal\My Docu
+                                          ments\gamsdir\HonsThesisDairy.gdx
+
+
+COMPILATION TIME     =        0.157 SECONDS      4 Mb  WIN220-143 Jul 27, 2005
+GAMS Rev 143  Intel/MS Windows                          03/27/06 10:00:25 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE m Using LP From line 100
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           4     SINGLE EQUATIONS        1,738
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES        3,798
+NON ZERO ELEMENTS        22,917
+
+
+GENERATION TIME      =        0.078 SECONDS      6 Mb  WIN220-143 Jul 27, 2005
+
+
+EXECUTION TIME       =        0.078 SECONDS      6 Mb  WIN220-143 Jul 27, 2005
+GAMS Rev 143  Intel/MS Windows                          03/27/06 10:00:25 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE m Using LP From line 100
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   m                   OBJECTIVE  obj
+     TYPE    LP                  DIRECTION  MAXIMIZE
+     SOLVER  CONOPT              FROM LINE  100
+
+**** SOLVER STATUS     1 NORMAL COMPLETION         
+**** MODEL STATUS      1 OPTIMAL                   
+**** OBJECTIVE VALUE            37528.6476
+
+ RESOURCE USAGE, LIMIT         11.625      1000.000
+ ITERATION COUNT, LIMIT        57         10000
+ 
+ 
+    C O N O P T 3   Intel/MS Windows version 3.14M-016-055
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ Using default options.
+ 
+ 
+ ** Optimal solution. There are no superbasic variables.
+ 
+ 
+ CONOPT time Total                           11.610 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+ Work length =    7.87 Mbytes
+    Estimate =    7.87 Mbytes
+    Max used =    4.59 Mbytes
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+
+
+EXECUTION TIME       =        0.000 SECONDS      3 Mb  WIN220-143 Jul 27, 2005
+
+
+USER: David Adamson                                  G050411:1546AP-WIN
+      The University of Queensland,  Risk & Sustainable ManagemenDC5245
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      C:\Documents and Settings\Neal\My Documents\gamsdir\HonsThesisDairyLP
+           .gms
+Output     C:\Documents and Settings\Neal\My Documents\gamsdir\HonsThesisDairyLP
+           .lst
