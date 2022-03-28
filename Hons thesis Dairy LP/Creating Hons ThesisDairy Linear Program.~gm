@@ -448,7 +448,7 @@ eFSupply(s,c,b)..
   -        sum(f, FF(b,s,f)   * vForageToCows(s,c,f)  )
   - sum(h, sum(f, FH(f,h,b)   * vConsToCows(s,c,f,h)  ))
   + sum(y, vNumberCows(c)     * DMIAdv(c,s,y) * FibreReq(b)  )
-  - vFibreSlack(b)                                                              #This tests what happens if fibre was not a constraint
+*  - vFibreSlack(b)                                                              #This tests what happens if fibre was not a constraint
                                                          =l= 0;
 
 *eSlackCon..
@@ -606,17 +606,17 @@ $libinclude xlchart FTES
 
 $offtext
 
-*$ontext
+$ontext
 * Plot Cash at end of month
 Parameter CashAtEOM(s) The cash BAlance at the End of the Month;
 CashAtEOM(s)= vCashTransfer.l(s);
 $set domain s
-$set labels s
-*$set series
+*$set labels s
+$set series
 
 $libinclude xlchart CashAtEOM
 
-*$offtext
+$offtext
 
 $ontext
 ***PLOTTING SCATTER XY GRAPHS***

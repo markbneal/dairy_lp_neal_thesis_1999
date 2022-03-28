@@ -532,6 +532,8 @@ eFixedCostsLimit..
 
 Model DairyFarm  / All / ;
 
+Option SAVEPOINT=1
+            
 Solve DairyFarm using lp maximizing vObjective;
 
 Display                 vForageArea.l
@@ -606,17 +608,17 @@ $libinclude xlchart FTES
 
 $offtext
 
-*$ontext
+$ontext
 * Plot Cash at end of month
 Parameter CashAtEOM(s) The cash BAlance at the End of the Month;
 CashAtEOM(s)= vCashTransfer.l(s);
 $set domain s
-$set labels s
-*$set series
+*$set labels s
+$set series
 
 $libinclude xlchart CashAtEOM
 
-*$offtext
+$offtext
 
 $ontext
 ***PLOTTING SCATTER XY GRAPHS***
